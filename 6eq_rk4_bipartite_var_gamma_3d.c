@@ -81,6 +81,9 @@ int main(int argc, char *argv[]) {
 	float R2_init = 0;
 	float p_init = 0;
 
+	float a, b, c;
+	float p_minus, R1_minus, R2_minus;
+
 	int partitions_gamma = atoi(argv[20]);
 	int partitions_vars = atoi(argv[21]);
 	int j, k1, k2, k3;
@@ -116,8 +119,16 @@ int main(int argc, char *argv[]) {
 
 					rk4sys(n, h, params, X, nsteps);
 
+					// Fixed points separatrix
+					a = (params[6] / params[2] + 1 ) * params[0];
+					b = (params[6] / params[2]) * params[0] * X[3] - params[0] * (1 - X[3]) - params[8] * X[3] - params[4];
+					c = (params[8] * X[3] + params[4]) * (1 - X[3]);
+					p_minus = (- b - sqrt(pow(b, 2) - 4 * a * c)) / (2 * a);
+					R1_minus = (params[0] * p_minus - params[8] * X[3] - params[4]) / (params[0] * (p_minus + X[3]));
+					R2_minus = R1_minus * X[3] / p_minus;
+
 					// Fixed points for each combination
-					printf("%6f, %6f, %6f, %6f, %6f, %6f, %6f\n", gamma, R1_init, R2_init, p_init, X[0], X[1], X[2]);
+					printf("%6f, %6f, %6f, %6f, %6f, %6f, %6f, %6f, %6f, %6f\n", gamma, R1_init, R2_init, p_init, X[0], X[1], X[2], R1_minus, R2_minus, p_minus);
 
 					// Update R1
 					R1_init += vars_step;
