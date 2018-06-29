@@ -3,8 +3,8 @@ library(tidyverse)
 # Parameters --------------------------------------------------------------
 # Initial conditions
 
-R1.init <- 1
-R2.init <- 0.5
+R1.init <- 0.75
+R2.init <- 0
 p.init <- 0
 s.init <- 0
 v1.init <- 0
@@ -18,8 +18,8 @@ alpha <- 1
 beta <- 1
 omega <- 1
 
-gamma1 <- 0.2
-gamma2 <- 0.2
+gamma1 <- 0.45
+gamma2 <- 0.45
 
 sigma1 <- 0.1
 sigma2 <- 0.1
@@ -34,7 +34,7 @@ delta2 <- 0.1
 n.iter <- 10000
 
 # Flags
-fixed.point.select <- "third.plus"
+fixed.point.select <- "second.plus"
 
 params <- c(n.iter,
 						R1.init, R2.init, p.init, s.init,
@@ -43,7 +43,7 @@ params <- c(n.iter,
 						epsilon1, epsilon2, delta1, delta2)
 
 #Compile
-system("gcc -Ofast -lm rk4_bipartite_6eq_test.c -o compiled/rk4-test")
+system("gcc -Ofast -lm 6eq_rk4_bipartite_test.c -o compiled/rk4-test")
 system(paste("./compiled/rk4-test", paste(params, collapse = ' '), "> data/results-test.csv"))
 
 # Read data
@@ -96,10 +96,8 @@ R2.star3.m <- R1.star3.m * p.star3.m / s.star3
 v1.star3.m <- epsilon1*R1.star3.m*s.star3 / delta1
 v2.star3.m <- epsilon2*R2.star3.m*s.star3 / delta2
 
-
-
 if (fixed.point.select == "second.plus") {
-	gg2p <- gg +
+	gg +
 		geom_hline( yintercept = p.star2.plus, color = "springgreen4", linetype="dotted" ) +
 		geom_hline( yintercept = R1.star2.plus, color = "red3", linetype="dotted" )
 } else if (fixed.point.select == "second.minus") {
@@ -108,12 +106,12 @@ if (fixed.point.select == "second.plus") {
 		geom_hline( yintercept = R1.star2.minus, color = "red3", linetype="dotted" )
 }else if (fixed.point.select == "third.plus")  {
 	gg +
-		geom_hline( yintercept = p.star3.p, color = "springgreen4", linetype="dotted" ) +
-		geom_hline( yintercept = R1.star3.p, color = "red3", linetype="dotted" ) +
-		geom_hline( yintercept = R2.star3.p, color = "royalblue", linetype="dotted" ) +
-		geom_hline( yintercept = s.star3, color = "purple3", linetype="dotted" ) +
-		geom_hline( yintercept = v1.star3.p, color = "black", linetype="dotted" ) +
-		geom_hline( yintercept = v2.star3.p, color = "orange", linetype="dotted" )
+		geom_hline( yintercept = p.star3.plus, color = "springgreen4", linetype="dotted" ) +
+		geom_hline( yintercept = R1.star3.plus, color = "red3", linetype="dotted" ) +
+		geom_hline( yintercept = R2.star3, color = "royalblue", linetype="dotted" ) +
+		geom_hline( yintercept = s.star3.plus, color = "purple3", linetype="dotted" ) +
+		geom_hline( yintercept = v1.star3.plus, color = "black", linetype="dotted" ) +
+		geom_hline( yintercept = v2.star3.plus, color = "orange", linetype="dotted" )
 }else if (fixed.point.select == "third.minus")  {
 	gg +
 		geom_hline( yintercept = p.star3.m, color = "springgreen4", linetype="dotted" ) +
@@ -127,141 +125,3 @@ if (fixed.point.select == "second.plus") {
 
 
 
-
-
-# else if (fixed.point.select == "third.plus")  {
-# 	gg +
-# 		geom_hline( yintercept = p.star3.plus, color = "springgreen4", linetype="dotted" ) +
-# 		geom_hline( yintercept = R1.star3.plus, color = "red3", linetype="dotted" ) +
-# 		geom_hline( yintercept = R2.star3, color = "royalblue", linetype="dotted" ) +
-# 		geom_hline( yintercept = s.star3.plus, color = "purple3", linetype="dotted" ) +
-# 		geom_hline( yintercept = v1.star3.plus, color = "black", linetype="dotted" ) +
-# 		geom_hline( yintercept = v2.star3.plus, color = "orange", linetype="dotted" )
-# }else if (fixed.point.select == "third.minus")  {
-# 	gg +
-# 		geom_hline( yintercept = p.star3.minus, color = "springgreen4", linetype="dotted" ) +
-# 		geom_hline( yintercept = R1.star3.minus, color = "red3", linetype="dotted" ) +
-# 		geom_hline( yintercept = R2.star3, color = "royalblue", linetype="dotted" ) +
-# 		geom_hline( yintercept = s.star3, color = "purple3", linetype="dotted" ) +
-# 		geom_hline( yintercept = v1.star3.minus, color = "black", linetype="dotted" ) +
-# 		geom_hline( yintercept = v2.star3, color = "orange", linetype="dotted" )
-# }else if (fixed.point.select == "third")  {
-# 	gg +
-# 		geom_hline( yintercept = p.star3, color = "springgreen4", linetype="dotted" ) +
-# 		geom_hline( yintercept = R1.star3, color = "red3", linetype="dotted" ) +
-# 		geom_hline( yintercept = R2.star3, color = "royalblue", linetype="dotted" ) +
-# 		geom_hline( yintercept = s.star3, color = "purple3", linetype="dotted" ) +
-# 		geom_hline( yintercept = v1.star3, color = "black", linetype="dotted" ) +
-# 		geom_hline( yintercept = v2.star3, color = "orange", linetype="dotted" )
-# }
-
-
-
-# initial.values  <- tibble(R1.init = seq(0,1,0.2),
-# 													R2.init = seq(0,1,0.2)) %>%
-# 	expand(R1.init, R2.init)
-#
-# initial.values <- initial.values%>%
-# 	mutate(value = numeric(nrow(initial.values)))
-#
-# alfR::lok_regar(for (combination in 1:nrow(initial.values)) {
-#
-# 	params <- c(n.iter,
-# 							initial.values$R1.init[combination], initial.values$R2.init[combination],
-# 							p.init, s.init, v1.init, v2.init,
-# 							kappa1, kappa2, alpha, beta, gamma1, gamma2, sigma1, sigma2,
-# 							epsilon1, epsilon2, delta1, delta2)
-#
-# 	system("gcc -Ofast -lm rk4_bipartite_6eq_test.c -o compiled/rk4-test")
-# 	system(paste("./compiled/rk4-test", paste(params, collapse = ' '), " data/results-test.csv"))
-#
-# 	data <- data.table::fread("data/results-test.csv")
-#
-# 	initial.values$value[combination] = (data$V2 == data$V3) && (data$V2 == 0)
-# })
-#
-# saveRDS(initial.values, "data/initial_values_matrix.RDS")
-#
-# initial.values <- initial.values %>%
-# 	mutate( value = ifelse(value == 1, "to zero", "to fixed point" ))
-#
-#
-# ggplot(initial.values) +
-# 	geom_tile(aes(x = R1.init, y = R2.init, fill = as.factor(value))) +
-# 	scale_fill_manual( values = c("to zero" = "mediumpurple1",
-# 																"to fixed point" = "seagreen1") )
-
-# library(tidyverse)
-#
-# initial.values <- readRDS("data/initial_values_matrix.RDS")
-#
-# # Function to find the slope and intercept -----------------
-# find_line <- function(initial.values) {
-# 	init.vals.cast <- reshape2::dcast(initial.values, R2.init ~ R1.init)
-# 	rownames(init.vals.cast) <- init.vals.cast[,1]
-# 	init.vals.cast[,1] <- NULL
-#
-# 	found.bot.left <- F
-# 	found.top.right <- F
-#
-# 	dim <- nrow(init.vals.cast)
-# 	parts <- dim - 1
-#
-# 	# R2 = 0 (bottom) x-axis
-# 	if (!found.bot.left ) {
-# 		for (j in 1:dim) {
-# 			if (init.vals.cast[1,j] == "to fixed point") {
-# 				bot.left <- c((j-1)/parts, 0)
-# 				found.bot.left <- T
-# 				break
-# 			}
-# 		}
-# 	}
-# 	# R1 = 0 (left) y-axis
-# 	if (!found.bot.left ) {
-# 		for (j in 1:dim) {
-# 			if (init.vals.cast[j,1] == "to fixed point") {
-# 				bot.left <- c(0, (j-1)/parts)
-# 				found.bot.left <- T
-# 				break
-# 			}
-# 		}
-# 	}
-#
-# 	# R2 = 1 (top) x-axis
-# 	if (!found.top.right ) {
-# 		for (j in 1:dim) {
-# 			if (init.vals.cast[dim,j] == "to fixed point") {
-# 				top.right <- c((j-1)/parts, 1)
-# 				found.top.right <- T
-# 				break
-# 			}
-# 		}
-# 	}
-# 	# R1 = 1 (right) y-axis
-# 	if (!found.top.right ) {
-# 		for (j in 1:dim) {
-# 			if (init.vals.cast[j,dim] == "to fixed point") {
-# 				top.right <- c(1, (j-1)/parts)
-# 				found.top.right <- T
-# 				break
-# 			}
-# 		}
-# 	}
-# 	beta = (top.right[2] - bot.left[2]) / (top.right[1] - bot.left[1])
-# 	alpha = bot.left[2] - beta * bot.left[1]
-# 	return(c(alpha, beta))
-# }
-#
-#
-# # Run the function -----------------------------------------
-#
-# # Find the values
-# line <- find_line(initial.values)
-#
-# ggplot(initial.values) +
-# 	geom_tile(aes(x = R1.init, y = R2.init, fill = as.factor(value))) +
-# 	scale_fill_manual( values = c("to zero" = "mediumpurple1",
-# 																"to fixed point" = "seagreen1") ) +
-# 	geom_abline(intercept = line[1], slope = line[2])
-#
