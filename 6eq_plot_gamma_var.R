@@ -36,27 +36,25 @@ params <- c(n.iter,
 						epsilon1, epsilon2, delta1, delta2,
 						gamma.parts, R.parts)
 
-# system("gcc -Ofast -lm rk4_bipartite_6eq_var_gamma.c -o compiled/rk4-gamma-var")
-# alfR::lok_regar(system(paste("./compiled/rk4-gamma-var", paste(params, collapse = ' '), "> data/results-gamma-var.csv")))
+system("gcc -Ofast -lm 6eq_rk4_bipartite_var_gamma.c -o compiled/rk4-gamma-var")
+alfR::lok_regar(system(paste("./compiled/rk4-gamma-var", paste(params, collapse = ' '), "> data/results-gamma-var.csv")))
 
-data <- data.table::fread("data/results-gamma-var.csv") %>%
+data_6eq_var_gamma10_until06 <- data.table::fread("data/results-gamma-var.csv") %>%
 	dplyr::rename(gamma = V1, R1.init = V2, R2.init = V3) %>%
 	dplyr::arrange(desc(gamma)) %>%
 	dplyr::filter(
-		gamma <= 0.5,
+		gamma <= 0.6,
 		gamma != 0
 		)
 
-data.from.rds <- readRDS("data/data_6eq_gamma10.rds")
-
-ggplot(data.from.rds) +
+plot_6eq_var_gamma10_until06 <- ggplot(data_6eq_var_gamma10_until06) +
 	geom_tile(aes(x = R1.init, y = R2.init, fill = (gamma))) +
 	scale_fill_gradient(low = "seagreen4", high = "darkseagreen1",
-											breaks = seq(0.1, 0.5, 0.1),
+											breaks = seq(0.1, 0.6, 0.1),
 											guide = "legend") +
-	labs(fill = "Gamma", title = paste("N =", n.iter)) +
+	labs(fill = "Gamma") +
 	theme_bw()
 
-# saveRDS(data, "data/data_6eq_gamma10.rds")
+saveRDS(plot_6eq_var_gamma10_until06, "data/plot_6eq_var_gamma10_until06 .rds")
 
 
