@@ -1,9 +1,10 @@
+
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # Author: Ruth Kristianingsih <ruth.kristianingsih30@gmail.com>
 
-from math import log, sqrt
+from math import log
 #from random import random
 import numpy as np
 
@@ -13,8 +14,8 @@ SELECT_FLAG = True
 # Given variables
 kappa = 1
 alpha = 1
-gamma = 0.1
-sigma = 0.1
+gamma = 0.3
+sigma = 0.5
 
 
 #def uniform_dist(min, max):
@@ -28,7 +29,7 @@ def ssa_gillespie(max_time, R_init, p_init):
 	time = 0.0
 	step = 0
 
-	with open("results-ssa.csv", "w") as file:
+	with open("./data/results-ssa.csv", "w") as file:
 		# Print initial values to file
 		file.write("%f %d %d\n" % (time, R, p))
 		# Main loop
@@ -40,13 +41,13 @@ def ssa_gillespie(max_time, R_init, p_init):
 
 			# Transition rates
 			w1 = gamma * R
-			w2 = sigma * p
-			w3 = alpha * R
-			w4 = alpha * R * p
-			w5 = kappa * R * p
-			w6 = kappa * R * R * p
+			w2 = kappa * R * R * p / (1500**2)
+			w3 = sigma * p
+			w4 = alpha * R * p / 1500
+			w5 = alpha * R
+			w6 = kappa * R * p / 1500
 			w0 = w1 + w2 + w3 + w4 + w5 + w6
-			print(R, p, w0)
+#			print(r1, R, p, w0)
 
 			# Timestep tau
 			tau = 1/w0 * log(1/r1)
@@ -55,16 +56,15 @@ def ssa_gillespie(max_time, R_init, p_init):
 			if 0 <= r2 < w1/w0:
 				R -= 1
 			elif w1/w0 <= r2 < (w1+w2)/w0:
-				p -= 1
+				R -= 1
 			elif (w1+w2)/w0 <= r2 < (w1+w2+w3)/w0:
-				p += 1
+				p -= 1
 			elif (w1+w2+w3)/w0 <= r2 < (w1+w2+w3+w4)/w0:
 				p -= 1
 			elif (w1+w2+w3+w4)/w0 <= r2 < (w1+w2+w3+w4+w5)/w0:
-				R += 1
+				p += 1
 			elif (w1+w2+w3+w4+w5)/w0 <= r2 < (w1+w2+w3+w4+w5+w6)/w0:
-				R -= 1
-
+				R += 1
 			# Update time step
 			time += tau
 			step += 1
@@ -74,7 +74,7 @@ def ssa_gillespie(max_time, R_init, p_init):
 	while not file.closed:
 		file.close()
 
-ssa_gillespie(100, 0.5, 0)
+ssa_gillespie(1000, 1500.0, 0)
 
 
 
