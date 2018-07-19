@@ -9,8 +9,8 @@ p.init <- 0
 # Parameters
 kappa <- 1
 omega <- 1
-gamma <- 0.1
-sigma <- 0.1
+gamma <- 0.3
+sigma <- 0.5
 
 # Number of interations
 n.iter <- 1000
@@ -23,7 +23,7 @@ params <- c(n.iter,
 						kappa, omega, gamma, sigma)
 
 #Compile
-system("gcc -Ofast -lm rk4_bipartite_2eq_test.c -o compiled/rk4-test")
+system("gcc -Ofast -lm 2eq_rk4_bipartite_test.c -o compiled/rk4-test")
 system(paste("./compiled/rk4-test", paste(params, collapse = ' '), "> data/results-test.csv"))
 
 # Read data
