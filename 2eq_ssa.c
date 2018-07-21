@@ -18,37 +18,53 @@ void ssa_gillespie(float *X, float *params) {
 	float r2 = uniform_dist(0, 1);
 
 	// Transition rates
-	float w1 = params[2] * X[1];
-	float w2 = params[0] * X[1] * X[1] * X[2] / pow(1000, 2);
-	float w3 = params[3] * X[2];
-	float w4 = params[1] * X[1] * X[2] / 1000;
-	float w5 = params[1] * X[1];
-	float w6 = params[0] * X[1] * X[2] / 1000;
-	float w0 = w1 + w2 + w3 + w4 + w5 + w6;
+	float *w = calloc(7, sizeof(float));
+	float *wsum = calloc(7, sizeof(float));
+
+	w[1] = params[2] * X[1];
+	w[2] = params[0] * X[1] * X[1] * X[2] / pow(1000, 2);
+	w[3] = params[3] * X[2];
+	w[4] = params[1] * X[1] * X[2] / 1000;
+	w[5] = params[1] * X[1];
+	w[6] = params[0] * X[1] * X[2] / 1000;
+
+	// Total Number of all of the transition rates above
+	for (int i = 1; i <= 6; i++) {
+		w[0] += w[i];
+	}
+
+	// Partial sums of the rates (to be evaluated in the conditionals)
+	wsum[0] = 0;
+
+	for (int i = 1; i <= 6; i++) {
+		for (int j = 1; j <= i; j++) {
+			wsum[i] += w[j];
+		}
+		wsum[i] /= w[0];
+	}
 
 	// Timestep tau
-	float tau = 1/w0 * log(1/r1);
+	float tau = 1/w[0] * log(1/r1);
 
 	// printf("%f, %f\n", r2, w0);
 
 	// Compute at time + tau
-	if ((0 <= r2) & (r2 < w1/w0)) {
+	if ( (wsum[0] <= r2) & (r2 < wsum[1]) ) {
 		X[1] -= 1;
-	} else if ( (w1/w0 <= r2) & (r2 < (w1+w2)/w0) ) {
+	} else if ( (wsum[1] <= r2) & (r2 < wsum[2]) ) {
 		X[1] -= 1;
-	} else if ( ((w1+w2)/w0 <= r2) & (r2 < (w1+w2+w3)/w0)) {
+	} else if ( (wsum[2] <= r2) & (r2 < wsum[3]) ) {
 		X[2] -= 1;
-	} else if ( ((w1+w2+w3)/w0 <= r2) & (r2 < (w1+w2+w3+w4)/w0)) {
+	} else if ( (wsum[3] <= r2) & (r2 < wsum[4]) ) {
 		X[2] -= 1;
-	} else if ( ((w1+w2+w3+w4)/w0 <= r2) & (r2 < (w1+w2+w3+w4+w5)/w0)) {
+	} else if ( (wsum[4] <= r2) & (r2 < wsum[5]) ) {
 		X[2] += 1;
-	} else if ( ((w1+w2+w3+w4+w5)/w0 <= r2) & (r2 < (w1+w2+w3+w4+w5+w6)/w0)) {
+	} else if ( (wsum[5] <= r2) & (r2 < wsum[6]) ) {
 		X[1] += 1;
 	}
 	// Update time step
 	X[0] += tau;
 }
-
 
 int main(int argc, char const *argv[]) {
 	// Parameters
