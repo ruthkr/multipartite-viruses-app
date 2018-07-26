@@ -47,14 +47,14 @@ data_6eq_var_gamma10_until06 <- data.table::fread("data/results-gamma-var.csv") 
 		gamma != 0
 		)
 
-plot_6eq_var_gamma10_until06 <- ggplot(data_6eq_var_gamma10_until06) +
+plot_6eq_var_gamma10 <- ggplot(data_6eq_var_gamma10) +
 	geom_tile(aes(x = R1.init, y = R2.init, fill = (gamma))) +
 	scale_fill_gradient(low = "seagreen4", high = "darkseagreen1",
-											breaks = seq(0.1, 0.6, 0.1),
+											breaks = seq(0.1, 0.5, 0.1),
 											guide = "legend") +
-	labs(fill = "Gamma") +
+	labs(fill = "Gamma", x = "Initial Value of RNA1", y = "Initial Value of RNA2") +
 	theme_bw()
 
-saveRDS(plot_6eq_var_gamma10_until06, "data/plot_6eq_var_gamma10_until06 .rds")
+saveRDS(plot_6eq_var_gamma10_until06, "objects/plot_6eq_var_gamma10_until06.rds")
 
 

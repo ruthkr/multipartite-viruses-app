@@ -51,8 +51,10 @@ plot_trajectory <- function(kappa, omega, gamma, sigma, step = 1000, scale = 100
 
 gg.trajs <- plot_trajectory(1, 1, 0.5, 0.1)
 
-gg.trajs
 
-saveRDS(gg.trajs, "trajectories.rds")
 
-gg.traj <- readRDS("trajectories.rds")
+saveRDS(gg.trajs, "objects/trajectories.rds")
+
+gg.traj <- readRDS("objects/trajectories.rds")
+
+gg.traj
