@@ -6,4 +6,6 @@
 *.DS_store
 /compiled
 /data
+/images
 4eq_rk4_bipartite_josep2.c
+*.sublime*
