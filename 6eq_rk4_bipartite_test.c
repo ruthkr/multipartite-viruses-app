@@ -30,7 +30,7 @@ void rk4sys(int n, float h, float *param, float *X, int nsteps) {
 		F[i] = calloc((n+1), sizeof(float));
 	}
 
-	for (step = 0; step < nsteps; step++) {
+	for (step = 1; step <= nsteps; step++) {
 		virus_dynamic(X, F[1], param);
 		for (i = 0; i <= n; i++)
 			Y[i] = X[i] + 0.5 * h * F[1][i];
@@ -68,6 +68,7 @@ int main(int argc, char *argv[]) {
 	// Initial conditions
 	// float X[]= {10.0, 1.0, 0, 0};
 	float X[]= {atof(argv[2]), atof(argv[3]), atof(argv[4]), atof(argv[5]), atof(argv[6]), atof(argv[7])};
+	printf("%2d, %6f, %6f, %6f, %6f, %6f, %6f\n", 0, X[0], X[1], X[2], X[3], X[4], X[5]);
 
 	// Parameters
 	float *params = calloc(12, sizeof(float));
@@ -84,6 +85,7 @@ int main(int argc, char *argv[]) {
 	params[9] = atof(argv[17]);  // epsilon2
 	params[10] = atof(argv[18]); // delta1
 	params[11] = atof(argv[19]); // delta2
+
 
 	// h = (b - a) / nsteps;
 	//h = 0.1;

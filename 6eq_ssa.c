@@ -4,7 +4,7 @@
 #include <time.h>
 
 float uniform_dist(float, float);
-void ssa_gillespie(float *, float *);
+void ssa_gillespie(float[] , float *);
 
 // Random Uniform Distribution
 float uniform_dist(float min, float max) {
@@ -13,7 +13,7 @@ float uniform_dist(float min, float max) {
 	return min + scale * ( max - min );      /* [min, max] */
 }
 
-void ssa_gillespie(float *X, float *params) {
+void ssa_gillespie(float X[], float *params) {
 	float r1 = uniform_dist(0, 1);
 	float r2 = uniform_dist(0, 1);
 
@@ -25,15 +25,15 @@ void ssa_gillespie(float *X, float *params) {
 	float *wsum = calloc(23, sizeof(float));
 
 	w[1] = params[0] * X[1] * X[3] / params[6];
-	w[2] = params[0] * X[1] * X[1] * X[3] / pow(params[6],2);
-	w[3] = params[0] * X[1] * X[2] * X[3] / pow(params[6],2);
+	w[2] = params[0] * X[1] * X[1] * X[3] / pow(params[6], 2);
+	w[3] = params[0] * X[1] * X[2] * X[3] / pow(params[6], 2);
 	w[4] = params[4] * X[1] * X[4] / params[6];
 	w[5] = params[2] * X[1];
 
 	// Reaction Rates for RNA2
 	w[6] = params[0] * X[2] * X[3] / params[6];
-	w[7] = params[0] * X[2] * X[2] * X[3] / pow(params[6],2);
-	w[8] = params[0] * X[1] * X[2] * X[3] / pow(params[6],2);
+	w[7] = params[0] * X[2] * X[2] * X[3] / pow(params[6], 2);
+	w[8] = params[0] * X[1] * X[2] * X[3] / pow(params[6], 2);
 	w[9] = params[4] * X[2] * X[4] / params[6];
 	w[10] = params[2] * X[2];
 
@@ -82,57 +82,67 @@ void ssa_gillespie(float *X, float *params) {
 	// printf("%f, %f\n", r2, w0);
 
 	// Compute at time + tau
-	if ((wsum[0] <= r2) & (r2 < wsum[1])) {
+	if ((wsum[0] < r2) & (r2 <= wsum[1])) {
 		X[1] += 1;
-	} else if ( (wsum[1] <= r2) & (r2 < wsum[2]) ) {
+	} else if ( (wsum[1] < r2) & (r2 <= wsum[2]) ) {
 		X[1] -= 1;
-	} else if ( (wsum[2] <= r2) & (r2 < wsum[3]) ) {
+	} else if ( (wsum[2] < r2) & (r2 <= wsum[3]) ) {
 		X[1] -= 1;
-	} else if ( (wsum[3] <= r2) & (r2 < wsum[4]) ) {
+	} else if ( (wsum[3] < r2) & (r2 <= wsum[4]) ) {
 		X[1] -= 1;
-	} else if ( (wsum[4] <= r2) & (r2 < wsum[5]) ) {
+	} else if ( (wsum[4] < r2) & (r2 <= wsum[5]) ) {
 		X[1] -= 1;
-	} else if ( (wsum[5] <= r2) & (r2 < wsum[6]) ) {
+	} else if ( (wsum[5] < r2) & (r2 <= wsum[6]) ) {
 		X[2] += 1;
-	} else if ( (wsum[6] <= r2) & (r2 < wsum[7]) ) {
+	} else if ( (wsum[6] < r2) & (r2 <= wsum[7]) ) {
 		X[2] -= 1;
-	} else if ( (wsum[7] <= r2) & (r2 < wsum[8]) ) {
+	} else if ( (wsum[7] < r2) & (r2 <= wsum[8]) ) {
 		X[2] -= 1;
-	} else if ( (wsum[8] <= r2) & (r2 < wsum[9]) ) {
+	} else if ( (wsum[8] < r2) & (r2 <= wsum[9]) ) {
 		X[2] -= 1;
-	} else if ( (wsum[9] <= r2) & (r2 < wsum[10]) ) {
+	} else if ( (wsum[9] < r2) & (r2 <= wsum[10]) ) {
 		X[2] -= 1;
-	} else if ( (wsum[10] <= r2) & (r2 < wsum[11]) ) {
+	} else if ( (wsum[10] < r2) & (r2 <= wsum[11]) ) {
 		X[3] += 1;
-	} else if ( (wsum[11] <= r2) & (r2 < wsum[12]) ) {
+	} else if ( (wsum[11] < r2) & (r2 <= wsum[12]) ) {
 		X[3] -= 1;
-	} else if ( (wsum[12] <= r2) & (r2 < wsum[13]) ) {
+	} else if ( (wsum[12] < r2) & (r2 <= wsum[13]) ) {
 		X[3] -= 1;
-	} else if ( (wsum[13] <= r2) & (r2 < wsum[14]) ) {
+	} else if ( (wsum[13] < r2) & (r2 <= wsum[14]) ) {
 		X[3] -= 1;
-	} else if ( (wsum[14] <= r2) & (r2 < wsum[15]) ) {
+	} else if ( (wsum[14] < r2) & (r2 <= wsum[15]) ) {
 		X[4] += 1;
-	} else if ( (wsum[15] <= r2) & (r2 < wsum[16]) ) {
+	} else if ( (wsum[15] < r2) & (r2 <= wsum[16]) ) {
 		X[4] -= 1;
-	} else if ( (wsum[16] <= r2) & (r2 < wsum[17]) ) {
+	} else if ( (wsum[16] < r2) & (r2 <= wsum[17]) ) {
 		X[4] -= 1;
-	} else if ( (wsum[17] <= r2) & (r2 < wsum[18]) ) {
+	} else if ( (wsum[17] < r2) & (r2 <= wsum[18]) ) {
 		X[4] -= 1;
-	} else if ( (wsum[18] <= r2) & (r2 < wsum[19]) ) {
+	} else if ( (wsum[18] < r2) & (r2 <= wsum[19]) ) {
 		X[5] += 1;
-	} else if ( (wsum[19] <= r2) & (r2 < wsum[20]) ) {
+	} else if ( (wsum[19] < r2) & (r2 <= wsum[20]) ) {
 		X[5] -= 1;
-	} else if ( (wsum[20] <= r2) & (r2 < wsum[21]) ) {
+	} else if ( (wsum[20] < r2) & (r2 <= wsum[21]) ) {
 		X[6] += 1;
-	} else if ( (wsum[21] <= r2) & (r2 < wsum[22]) ) {
+	} else if ( (wsum[21] < r2) & (r2 <= wsum[22]) ) {
 		X[6] -= 1;
 	}
 	// Update time step
 	X[0] += tau;
+
+	free(w);
+	free(wsum);
 }
 
 
 int main(int argc, char const *argv[]) {
+
+	// Maximum Time
+	float max_time = atof(argv[1]);
+
+	// Initial Condition
+	float X[] = { 0, atof(argv[2]), atof(argv[3]), atof(argv[4]), atof(argv[5]), atof(argv[6]), atof(argv[7]) };
+
 	// Parameters
 	float *params = calloc(7, sizeof(float));
 	params[0] = atof(argv[8]);  // kappa
@@ -145,8 +155,6 @@ int main(int argc, char const *argv[]) {
 
 	srand((unsigned)time(NULL));
 
-	float X[] = { 0, atof(argv[2]), atof(argv[3]), atof(argv[4]), atof(argv[5]), atof(argv[6]), atof(argv[7]) };
-	float max_time = atof(argv[1]);
 
 	printf("%f, %f, %f, %f, %f, %f, %f\n", X[0], X[1], X[2], X[3], X[4], X[5], X[6]);
 
@@ -158,6 +166,7 @@ int main(int argc, char const *argv[]) {
 		printf("%f, %f, %f, %f, %f, %f, %f\n", X[0], X[1], X[2], X[3], X[4], X[5], X[6]);
 	}
 
+	free(params);
 	return 0;
 }
 

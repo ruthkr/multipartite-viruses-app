@@ -48,9 +48,9 @@ void rk4sys(int n, float h, float *param, float *X, int nsteps) {
 		//   printf("step = %2d, X[%d] = %14f\n", step, i, X[i]);
 		// }
 
-		if (step == nsteps -1 ) {
-			printf("%2d, %6f, %6f, %6f, %6f, %6f, %6f\n", step, X[0], X[1], X[2], X[3], X[4], X[5]);
-		}
+		// if (step == nsteps -1 ) {
+		// 	printf("%2d, %6f, %6f, %6f, %6f, %6f, %6f\n", step, X[0], X[1], X[2], X[3], X[4], X[5]);
+		// }
 	}
 
 	for (i = 0; i <= RK_order; i++)
@@ -58,7 +58,6 @@ void rk4sys(int n, float h, float *param, float *X, int nsteps) {
 
 	free(F);
 	free(Y);
-
 }
 
 int main(int argc, char *argv[]) {
@@ -79,7 +78,7 @@ int main(int argc, char *argv[]) {
 		gamma += gamma_step;
 
 		// Initial conditions
-		float X[]= {atof(argv[2]), atof(argv[3]), atof(argv[4]), atof(argv[5]), atof(argv[6]), atof(argv[7])};
+		float X[] = {atof(argv[2]), atof(argv[3]), atof(argv[4]), atof(argv[5]), atof(argv[6]), atof(argv[7])};
 
 		params[0] = atof(argv[8]);   // kappa1
 		params[1] = atof(argv[9]);   // kappa2
@@ -95,6 +94,21 @@ int main(int argc, char *argv[]) {
 		params[11] = atof(argv[19]); // delta2
 
 		rk4sys(n, h, params, X, nsteps);
+
+		// Fixed points separatrix (Formulation 1)
+		// a = (params[6] / params[2] + 1 ) * params[0];
+		// b = (params[6] / params[2]) * params[0] * X[3] - params[0] * (1 - X[3]) - params[8] * X[3] - params[4];
+		// c = (params[8] * X[3] + params[4]) * (1 - X[3]);
+
+		// p_minus = (- b - sqrt(pow(b, 2) - 4 * a * c)) / (2 * a);
+		// R1_minus = (params[0] * p_minus - params[8] * X[3] - params[4]) / (params[0] * (p_minus + X[3]));
+		// R2_minus = R1_minus * X[3] / p_minus;
+
+		// p_plus = (- b + sqrt(pow(b, 2) - 4 * a * c)) / (2 * a);
+		// R1_plus = (params[0] * p_plus - params[8] * X[3] - params[4]) / (params[0] * (p_plus + X[3]));
+		// R2_plus = R1_plus * X[3] / p_plus;
+
+		printf("%6f, %6f, %6f, %6f, %6f\n", gamma, X[0], X[1], X[2], X[3]);
 	}
 
 	free(params);
