@@ -65,6 +65,8 @@ int main(int argc, char *argv[]) {
 	// float X[]= {10.0, 1.0, 0, 0};
 	float X[]= {atof(argv[2]), atof(argv[3])};
 
+	printf("%2d, %6f, %6f\n", 0, X[0], X[1]);
+
 	// Parameters
 	float *params = calloc(4, sizeof(float));
 
@@ -72,7 +74,6 @@ int main(int argc, char *argv[]) {
 	params[1] = atof(argv[5]);   // omega
 	params[2] = atof(argv[6]);   // gamma
 	params[3] = atof(argv[7]);   // sigma
-
 
 	// h = (b - a) / nsteps;
 	//h = 0.1;
