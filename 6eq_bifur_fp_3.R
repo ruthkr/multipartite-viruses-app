@@ -5,7 +5,7 @@ library(tidyverse)
 # Parameters --------------------------------------------------------------
 # Initial conditions
 R1.init <- 1
-R2.init <- 0.5
+R2.init <- 1
 p.init <- 0
 s.init <- 0
 v1.init <- 0
@@ -68,6 +68,19 @@ omega <- 1
 gamma <- var.ss.fp3.df$gamma
 
 
+# var.ss.fp3.df.bis <- var.ss.fp3.df %>%
+# 	mutate(
+# 		a = (sigma1 / omega + 1 ) * kappa1,
+# 		b = (sigma1 / omega) * kappa1 * s - kappa1 * (1 - s) - epsilon1 * s - gamma,
+# 		c = (epsilon1*s + gamma) * (1 - s),
+# 		p.star.plus = (-b + sqrt(b^2 - 4 * a * c)) / (2*a),
+# 		p.star.minus = (-b - sqrt(b^2 - 4 * a * c)) / (2*a),
+# 		R1.star.plus = (kappa1*p.star.plus - epsilon1*s - gamma) / (kappa1 * (p.star.plus + s)),
+# 		R1.star.minus = (kappa1*p.star.minus - epsilon1*s - gamma) / (kappa1 * (p.star.minus + s))
+# 	) %>%
+# 	select(-a,-b,-c)
+
+
 var.ss.fp3.df.bis <- var.ss.fp3.df %>%
 	mutate(
 		a = (sigma1 / omega + 1 ) * kappa1,
@@ -75,40 +88,31 @@ var.ss.fp3.df.bis <- var.ss.fp3.df %>%
 		c = (epsilon1*s + gamma) * (1 - s),
 		p.star.plus = (-b + sqrt(b^2 - 4 * a * c)) / (2*a),
 		p.star.minus = (-b - sqrt(b^2 - 4 * a * c)) / (2*a),
-		R1.star.plus = (kappa1*p.star.plus - epsilon1*s - gamma) / (kappa1 * (p.star.plus + s)),
-		R1.star.minus = (kappa1*p.star.minus - epsilon1*s - gamma) / (kappa1 * (p.star.minus + s))
+		R2.star.plus = sigma2 * s / (omega * (1 - p.star.plus - s)),
+		R1.star.plus = 1 - R2.star.plus - epsilon1*s / (kappa1*p.star.plus) - gamma / (kappa1*p.star.plus),
+		R2.star.minus = sigma2 * s / (omega * (1 - p.star.minus - s)),
+		R1.star.minus = 1 - R2.star.minus - epsilon1*s / (kappa1*p.star.minus) - gamma / (kappa1*p.star.minus)
 	) %>%
 	select(-a,-b,-c)
-
-# var.ss.fp3.df.bis <- var.ss.fp3.df %>%
-# 	mutate(
-# 		a = sigma1 * kappa1/omega + kappa1 * (1 - R2),
-# 		b = -(epsilon1 * s + gamma + kappa1 * (1 - s)*(1 - R2)),
-# 		c = (epsilon1 * s + gamma) * (1 - s),
-# 		p.star.plus = (-b + sqrt(b^2 - 4 * a * c)) / (2*a),
-# 		p.star.minus = (-b - sqrt(b^2 - 4 * a * c)) / (2*a),
-# 		R1.star.plus = 1 - R2 - epsilon1 * s / (kappa1 * p.star.plus) - gamma / (kappa1 * p.star.plus),
-# 		R1.star.minus = 1 - R2 - epsilon1 * s / (kappa1 * p.star.minus) - gamma / (kappa1 * p.star.minus)
-# 		) %>%
-# 	select(-a,-b,-c)
 
 
 
 # Create plot
 
-ggplot(var.ss.fp3.df.bis) +
-	 	geom_line(aes(x = gamma, y = p.star.plus, colour = "p.plus"), size=1) +
-	 	geom_line(aes(x = gamma, y = p.star.minus, colour = "p.minus"), linetype="dashed", size=1) +
-	 	labs(x = "Gamma", y = "Equilibrium Point", color = "Variable") +
-	 	scale_color_manual(values = c("p.plus" = "red3", "p.minus" = "royalblue")) +
-	 	theme_bw()
+# ggplot(var.ss.fp3.df.bis) +
+# 	 	geom_line(aes(x = gamma, y = p.star.plus, colour = "p.plus"), size=1) +
+# 	 	geom_line(aes(x = gamma, y = p.star.minus, colour = "p.minus"), linetype="dashed", size=1) +
+# 	 	labs(x = "Gamma", y = "Equilibrium Point", color = "Variable") +
+# 	 	scale_color_manual(values = c("p.plus" = "red3", "p.minus" = "royalblue")) +
+# 	 	theme_bw()
 
 ggplot(var.ss.fp3.df.bis) +
 	geom_line(aes(x = gamma, y = R1.star.plus, colour = "R1.plus"), size=1) +
 	geom_line(aes(x = gamma, y = R1.star.minus, colour = "R1.minus"), linetype="dashed", size=1) +
-	geom_line(aes(x = gamma, y = R1, colour = "R1"), linetype="dashed", size=1) +
+	# geom_line(aes(x = gamma, y = R1, colour = "R1"), linetype="dashed", size=1) +
 	labs(x = "Gamma", y = "Equilibrium Point", color = "Variable") +
 	scale_color_manual(values = c("R1.plus" = "red3", "R1.minus" = "royalblue", "R1" = "yellow")) +
+	scale_x_continuous(breaks = seq(0, 1, 0.05)) +
 	theme_bw()
 
 
