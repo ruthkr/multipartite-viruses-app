@@ -6,30 +6,30 @@ source("libs/grind.R")
 
 model <- function(t, state, parms) {
 	with(as.list(c(state,parms)), {
-		dR1 <- kappa1 * R1 * p1 * (1 - R1- R2) - gamma1 * R1 - epsilon1 * R1 * s1
-		dR2 <- kappa2 * R2 * p1 * (1 - R1- R2) - gamma2 * R2 - epsilon2 * R2 * s1
-		dp1 <-  alpha * R1 * (1 - p1 - s1) - sigma1 * p1
-		ds1 <-  beta * R2 * (1 - p1 - s1) - sigma2 * s1
-		dv1 <- epsilon1 * R1 * s1 - delta1 * v1
-		dv2 <- epsilon2 * R2 * s1 - delta2 * v2
-		return(list(c(dR1, dR2, dp1, ds1, dv1, dv2)))
+		dRNA1 <- kappa1 * RNA1 * replicase * (1 - RNA1- RNA2) - gamma1 * RNA1 - epsilon1 * RNA1 * coat
+		dRNA2 <- kappa2 * RNA2 * replicase * (1 - RNA1- RNA2) - gamma2 * RNA2 - epsilon2 * RNA2 * coat
+		dreplicase <-  alpha * RNA1 * (1 - replicase - coat) - sigma1 * replicase
+		dcoat <-  beta * RNA2 * (1 - replicase - coat) - sigma2 * coat
+		dvirion1 <- epsilon1 * RNA1 * coat - delta1 * virion1
+		dvirion2 <- epsilon2 * RNA2 * coat - delta2 * virion2
+		return(list(c(dRNA1, dRNA2, dreplicase, dcoat, dvirion1, dvirion2)))
 	})
 }
 
 p <- c(kappa1 = 1, kappa2 = 1,
 			 alpha = 1, beta = 1,
-			 gamma1 = 0.2, gamma2 = 0.2,
+			 gamma1 = 0.5, gamma2 = 0.5,
 			 sigma1 = 0.1, sigma2 = 0.1,
 			 epsilon1 = 0.1, epsilon2 = 0.1,
 			 delta1 = 0.1, delta2 = 0.1) # p is a named vector of parameters
 
 
-s <- c(R1 = 1,
-			 R2 = 0.07,
-			 p1 = 0,
-			 s1 = 0,
-			 v1 = 0,
-			 v2 = 0)                # s is the state
+s <- c(RNA1 = 1,
+			 RNA2 = 0.7,
+			 replicase = 0,
+			 coat = 0,
+			 virion1 = 0,
+			 virion2 = 0)                # s is the state
 
 # Run simulation
 # run(tstep = 0.1, tmax = 1000)
@@ -37,8 +37,7 @@ s <- c(R1 = 1,
 # Phase portrait
 # pdf(file="phase_pot_fp3_R1_R2_010.pdf",width=6,height=5)
 
-plane(x = "R1", y = "R2", tstep = 0.5, portrait = T)
-
+plane(x = "RNA1", y = "RNA2", tstep = 0.5, portrait = T)
 
 # dev.off()
 

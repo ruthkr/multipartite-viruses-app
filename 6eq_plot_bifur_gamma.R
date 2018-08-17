@@ -2,8 +2,8 @@ library(tidyverse)
 
 # Parameters --------------------------------------------------------------
 # Initial conditions
-R1.init <- 1
-R2.init <- 0.5
+R1.init <- 0.75
+R2.init <- 0
 p.init <- 0
 s.init <- 0
 v1.init <- 0
@@ -51,7 +51,7 @@ compile <- function(num, point = "third") {
 								kappa1, kappa2, alpha, beta, gamma, gamma, sigma1, sigma2,
 								epsilon1, epsilon2, delta1, delta2)
 
-		system("gcc -Ofast -lm rk4_bipartite_6eq_test.c -o compiled/rk4-test")
+		system("gcc -Ofast -lm 6eq_rk4_bipartite_test.c -o compiled/rk4-test")
 		system(paste("./compiled/rk4-test", paste(params, collapse = ' '), "> data/results-test.csv"))
 
 		# Read data
@@ -68,17 +68,15 @@ compile <- function(num, point = "third") {
 get_steady_states <- function(num) {
 	R1.3.ss <- compile(num)$R1.ss
 	R2.3.ss <- compile(num)$R2.ss
-	# R1.2.ss <- compile(num, "second")$R1.ss
-	# R2.2.ss <- compile(num, "second")$R2.ss
-
-
+	R1.2.ss <- compile(num, "second")$R1.ss
+	R2.2.ss <- compile(num, "second")$R2.ss
 	gamma.h <- 1/num
 	RNA.ss.df <- tibble(
 		gamma = seq(0,1,gamma.h),
 		R1.3 = R1.3.ss,
-		# R1.2 = R1.2.ss,
-		R2.3 = R2.3.ss
-		# R2.2 = R2.2.ss
+		R1.2 = R1.2.ss,
+		R2.3 = R2.3.ss,
+		R2.2 = R2.2.ss
 		)
 	return(RNA.ss.df)
 }
@@ -91,32 +89,33 @@ RNA.ss.df %>%
 	head(1)
 
 # Create plot
-gR1 <- ggplot(RNA.ss.df) +
-	geom_line(aes(x = gamma, y = R1.3, colour = "R1.3")) +
-	geom_line(aes(x = gamma, y = R1.2, colour = "R1.2")) +
-	labs(x = "Gamma", y = "Equilibrium Point", color = "Variable") +
-	scale_color_manual(values = c("R1.3" = "red3", "R1.2" = "royalblue")) +
-	theme_bw()
+# gR1 <- ggplot(RNA.ss.df) +
+# 	geom_line(aes(x = gamma, y = R1.3, colour = "R1.3")) +
+# 	geom_line(aes(x = gamma, y = R1.2, colour = "R1.2")) +
+# 	labs(x = "Gamma", y = "Equilibrium Point", color = "Variable") +
+# 	scale_color_manual(values = c("R1.3" = "red3", "R1.2" = "royalblue")) +
+# 	theme_bw()
+#
+# gR2 <- ggplot(RNA.ss.df) +
+# 	geom_line(aes(x = gamma, y = R2.3, colour = "R2.3")) +
+# 	geom_line(aes(x = gamma, y = R2.2, colour = "R2.2")) +
+# 	labs(x = "Gamma", y = "Equilibrium Point", color = "Variable") +
+# 	scale_color_manual(values = c("R2.3" = "mediumpurple3", "R2.2" = "lightpink2")) +
+# 	theme_bw()
+#
+# gR1.R2.fp.3 <- ggplot(RNA.ss.df) +
+# 	geom_line(aes(x = gamma, y = R1.3, colour = "R1.3")) +
+# 	geom_line(aes(x = gamma, y = R2.3, colour = "R2.3")) +
+# 	labs(x = "Gamma", y = "Equilibrium Point", color = "Variable") +
+# 	scale_color_manual(values = c("R1.3" = "red3", "R2.3" = "royalblue")) +
+# 	theme_bw()
 
-gR2 <- ggplot(RNA.ss.df) +
-	geom_line(aes(x = gamma, y = R2.3, colour = "R2.3")) +
-	geom_line(aes(x = gamma, y = R2.2, colour = "R2.2")) +
+ggplot(RNA.ss.df) +
+	geom_line(aes(x = gamma, y = R2.2, colour = "RNA2")) +
+	geom_line(aes(x = gamma, y = R1.2, colour = "RNA1")) +
 	labs(x = "Gamma", y = "Equilibrium Point", color = "Variable") +
-	scale_color_manual(values = c("R2.3" = "mediumpurple3", "R2.2" = "lightpink2")) +
-	theme_bw()
-
-gR1.R2.fp.3 <- ggplot(RNA.ss.df) +
-	geom_line(aes(x = gamma, y = R1.3, colour = "R1.3")) +
-	geom_line(aes(x = gamma, y = R2.3, colour = "R2.3")) +
-	labs(x = "Gamma", y = "Equilibrium Point", color = "Variable") +
-	scale_color_manual(values = c("R1.3" = "red3", "R2.3" = "royalblue")) +
-	theme_bw()
-
-gR1.R2.fp.2 <- ggplot(RNA.ss.df) +
-	geom_line(aes(x = gamma, y = R2.2, colour = "R2.2")) +
-	geom_line(aes(x = gamma, y = R1.2, colour = "R1.2")) +
-	labs(x = "Gamma", y = "Equilibrium Point", color = "Variable") +
-	scale_color_manual(values = c("R1.2" = "red3", "R2.2" = "royalblue")) +
+	scale_color_manual(values = c("RNA1" = "red3", "RNA2" = "royalblue")) +
+	scale_x_continuous(breaks = seq(0, 1, 0.1)) +
 	theme_bw()
 
 # gR1.R2.fp.2 + ggsave(filename = "bifur_fp2_kappa1.pdf", width = 5.75, height = 3, dpi = 96, device = cairo_pdf)

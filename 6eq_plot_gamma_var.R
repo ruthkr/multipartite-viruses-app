@@ -57,4 +57,4 @@ plot_6eq_var_gamma10 <- ggplot(data_6eq_var_gamma10) +
 
 saveRDS(plot_6eq_var_gamma10_until06, "objects/plot_6eq_var_gamma10_until06.rds")
 
-
+plot_6eq_var_gamma10_until06 <- readRDS("objects/plot_6eq_var_gamma10_until06.rds")
