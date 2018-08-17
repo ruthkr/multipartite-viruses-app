@@ -32,12 +32,12 @@ data2eq.gm20 <- data.table::fread("data/results-gamma-var.csv") %>%
 	)
 
 
-
+data2eq.gm20 <- readRDS("objects/data2eq.gm20.rds")
 
 gg.2eq.gamma20 <- ggplot(data2eq.gm20) +
 	geom_tile(aes(x = R.init, y = p.init, fill = (gamma))) +
 	scale_fill_gradient(low = "seagreen4", high = "darkseagreen1",
-											breaks = seq(0.1, 0.5, 0.05),
+											breaks = seq(0.1, 0.55, 0.05),
 											guide = "legend") +
 	labs(fill = "Gamma") +
 	theme_bw()
@@ -46,6 +46,6 @@ gg.2eq.gamma20
 
 # plot.2eq.gm10 <- readRDS("objects/gg_2eq_gamma10.rds")
 
-saveRDS(data2eq.gm20, "objects/data2eq.gm20.rds")
+# saveRDS(data2eq.gm20, "objects/data2eq.gm20.rds")
 
-saveRDS(gg.2eq.gamma20, "objects/gg.2eq.gamma20.rds")
+saveRDS(gg.2eq.gamma20, "objects/plot_2eq_var_gamma20.rds")
