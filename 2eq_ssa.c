@@ -4,7 +4,7 @@
 #include <time.h>
 
 float uniform_dist(float, float);
-void ssa_gillespie(float *, float *);
+void ssa_gillespie(float[], float *);
 
 // Random Uniform Distribution
 float uniform_dist(float min, float max) {
@@ -13,7 +13,7 @@ float uniform_dist(float min, float max) {
 	return min + scale * ( max - min );      /* [min, max] */
 }
 
-void ssa_gillespie(float *X, float *params) {
+void ssa_gillespie(float X[], float *params) {
 	float r1 = uniform_dist(0, 1);
 	float r2 = uniform_dist(0, 1);
 

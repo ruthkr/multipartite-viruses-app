@@ -14,8 +14,8 @@ SELECT_FLAG = True
 # Given variables
 kappa = 1
 alpha = 1
-gamma = 0.3
-sigma = 0.5
+gamma = 0.5
+sigma = 0.1
 
 
 #def uniform_dist(min, max):
@@ -41,11 +41,11 @@ def ssa_gillespie(max_time, R_init, p_init):
 
 			# Transition rates
 			w1 = gamma * R
-			w2 = kappa * R * R * p / (1500**2)
+			w2 = kappa * R * R * p / (1000**2)
 			w3 = sigma * p
-			w4 = alpha * R * p / 1500
+			w4 = alpha * R * p / 1000
 			w5 = alpha * R
-			w6 = kappa * R * p / 1500
+			w6 = kappa * R * p / 1000
 			w0 = w1 + w2 + w3 + w4 + w5 + w6
 #			print(r1, R, p, w0)
 
@@ -74,7 +74,7 @@ def ssa_gillespie(max_time, R_init, p_init):
 	while not file.closed:
 		file.close()
 
-ssa_gillespie(1000, 1500.0, 0)
+ssa_gillespie(100000, 410, 0)
 
 
 
