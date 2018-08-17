@@ -16,12 +16,12 @@
 #	along with this script. If not, see <http://www.gnu.org/licenses/>.
 
 BEGIN{
-	FS = ","
+	FS = ", "
 	OFS = ","
 }
 {
 	# if ($1 == gamma && $4 == 0 && $2 % 0.1 == 0 && $3 % 0.1 == 0 ) {
-	if ($1 == gamma && ($4 == 0 || $4 == 0.2)  ) {
+	if ($1 == gamma && ($4 == 0 || $4 == 0.5)) {
 		print $2, $3, $4
 		print $5, $6, $7
 	}

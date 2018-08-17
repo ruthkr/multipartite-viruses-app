@@ -16,14 +16,15 @@
 #	along with this script. If not, see <http://www.gnu.org/licenses/>.
 
 BEGIN{
-	FS = ","
+	FS = ", "
 	OFS = ","
 }
 {
 	if ($1 == gamma) {
-		print $8, $9, $10
+		print $12, $13, $14
 	}
 }
 
 # INSTRUCTIONS:
 # awk -v gamma=0.0 -f clean_3d_data.awk mathematica_gamma_3d.csv
+#

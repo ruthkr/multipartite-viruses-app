@@ -16,7 +16,7 @@
 #	along with this script. If not, see <http://www.gnu.org/licenses/>.
 
 BEGIN{
-	FS = ","
+	FS = ", "
 	OFS = ","
 }
 {
@@ -27,3 +27,5 @@ BEGIN{
 
 # INSTRUCTIONS:
 # awk -v gamma=0.0 -f clean_3d_data.awk mathematica_gamma_3d.csv
+
+# && ($4 == 0 || $4 == 0.75 || $4 == 0.6 || $4 == 0.9
