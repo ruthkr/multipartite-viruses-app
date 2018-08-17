@@ -11,7 +11,7 @@ server <- function(input, output) {
 	source("libs/grind.R") # For phase portrait
 
 	# Dynamic plot list
-	observeEvent(input$run_sims, {
+	# observeEvent(input$run_sims, {
 		output$ui_plots <- renderUI({
 			out <- list()
 			if (length(input$`plots_checkbox`)==0){return(NULL)}
@@ -21,7 +21,7 @@ server <- function(input, output) {
 				out[[i]] <- plotOutput(outputId = paste0(input$sidebarmenu, "_", i))
 			}
 			return(out)
-		})
+		# })
 	})
 
 	# Replication model

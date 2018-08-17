@@ -107,9 +107,9 @@ body <- dashboardBody(
 	tabItems(
 		tabItem(tabName = "home",
 						h2("About this project"),
-						includeMarkdown("body.md"),
+						# includeMarkdown("body.md"),
 						actionButton(
-							inputId='ab1', label="Fork us",
+							inputId='ab1', label="Fork this project",
 							icon = icon("github"),
 							onclick ="window.open(
 							'https://github.com/aldomann/open-data-project', '_blank')"
