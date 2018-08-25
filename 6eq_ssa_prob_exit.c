@@ -20,41 +20,45 @@ void ssa_gillespie(float X[], float *params) {
 	// X[1] = R1, X[2] = R2, X[3] = p, X[4] = s, X[5] = v1, X[6] = v2
 
 	// Transition rates
-	// Reaction Rates for RNA1
 	float *w = calloc(23, sizeof(float));
 	float *wsum = calloc(23, sizeof(float));
 
-	w[1] = params[0] * X[1] * X[3] / params[6];
-	w[2] = params[0] * X[1] * X[1] * X[3] / pow(params[6], 2);
-	w[3] = params[0] * X[1] * X[2] * X[3] / pow(params[6], 2);
-	w[4] = params[4] * X[1] * X[4] / params[6];
+	// Current capacity variables
+	float one_over_cc = 1 / params[6];
+	float one_over_cc_sqr = 1 / pow(params[6], 2);
+
+	// Reaction Rates for RNA1
+	w[1] = params[0] * X[1] * X[3] * one_over_cc;
+	w[2] = params[0] * X[1] * X[1] * X[3] * one_over_cc_sqr;
+	w[3] = params[0] * X[1] * X[2] * X[3] * one_over_cc_sqr;
+	w[4] = params[4] * X[1] * X[4] * one_over_cc;
 	w[5] = params[2] * X[1];
 
 	// Reaction Rates for RNA2
-	w[6] = params[0] * X[2] * X[3] / params[6];
-	w[7] = params[0] * X[2] * X[2] * X[3] / pow(params[6], 2);
-	w[8] = params[0] * X[1] * X[2] * X[3] / pow(params[6], 2);
-	w[9] = params[4] * X[2] * X[4] / params[6];
+	w[6] = params[0] * X[2] * X[3] * one_over_cc;
+	w[7] = params[0] * X[2] * X[2] * X[3] * one_over_cc_sqr;
+	w[8] = params[0] * X[1] * X[2] * X[3] * one_over_cc_sqr;
+	w[9] = params[4] * X[2] * X[4] * one_over_cc;
 	w[10] = params[2] * X[2];
 
 	// Reaction Rates for viral replicase
 	w[11] = params[1] * X[1];
-	w[12] = params[1] * X[1] * X[3] / params[6];
-	w[13] = params[1] * X[1] * X[4] / params[6];
+	w[12] = params[1] * X[1] * X[3] * one_over_cc;
+	w[13] = params[1] * X[1] * X[4] * one_over_cc;
 	w[14] = params[3] * X[3];
 
 	// Reaction Rates for coat protein
 	w[15] = params[1] * X[2];
-	w[16] = params[1] * X[2] * X[3] / params[6];
-	w[17] = params[1] * X[2] * X[4] / params[6];
+	w[16] = params[1] * X[2] * X[3] * one_over_cc;
+	w[17] = params[1] * X[2] * X[4] * one_over_cc;
 	w[18] = params[3] * X[4];
 
 	// Reaction Rates for virion1
-	w[19] = params[4] * X[1] * X[4]/ params[6];
+	w[19] = params[4] * X[1] * X[4] * one_over_cc;
 	w[20] = params[5] * X[5];
 
 	// Reaction Rates for virion2
-	w[21] = params[4] * X[2] * X[4]/ params[6];
+	w[21] = params[4] * X[2] * X[4] * one_over_cc;
 	w[22] = params[5] * X[6];
 
 

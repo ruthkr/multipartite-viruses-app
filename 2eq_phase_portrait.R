@@ -14,8 +14,8 @@ model <- function(t, state, parms) {
 
 p <- c(kappa = 1,
 			 alpha = 1,
-			 gamma = 0.54,
-			 sigma = 0.1) # p is a named vector of parameters
+			 gamma = 0.1,
+			 sigma = 1) # p is a named vector of parameters
 
 
 s <- c(RNA1 = 1,

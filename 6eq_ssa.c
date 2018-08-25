@@ -20,10 +20,10 @@ void ssa_gillespie(float X[], float *params) {
 	// X[1] = R1, X[2] = R2, X[3] = p, X[4] = s, X[5] = v1, X[6] = v2
 
 	// Transition rates
-	// Reaction Rates for RNA1
 	float *w = calloc(23, sizeof(float));
 	float *wsum = calloc(23, sizeof(float));
 
+	// Reaction Rates for RNA1
 	w[1] = params[0] * X[1] * X[3] / params[6];
 	w[2] = params[0] * X[1] * X[1] * X[3] / pow(params[6], 2);
 	w[3] = params[0] * X[1] * X[2] * X[3] / pow(params[6], 2);

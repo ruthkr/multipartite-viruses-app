@@ -56,7 +56,7 @@ params <- c(n.iter,
 # Read simulation results -------------------------------------------------
 
 # df <- data.table::fread(paste0("data/6eq_var_gamma.csv"))
-df <- data.table::fread(paste0("data/6eq_var_gamma_1000x100.csv"))
+df <- data.table::fread(paste0("data/6eq_var_gamma_100K.csv"))
 # df.old <- data.table::fread(paste0("data/6eq_var_gamma.csv"))
 
 clean_var_gamma_results_first_fp <- function(df) {
