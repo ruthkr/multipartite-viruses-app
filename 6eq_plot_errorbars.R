@@ -1,5 +1,17 @@
 library(tidyverse)
 
+data.small <- data.table::fread("data/6eq_ssa_prob_extinction_small_R2.csv") %>%
+	rename(gamma = V1, R1.init = V2, R2.init = V3, prob = V4) %>%
+	filter(
+		R2.init != 0,
+		R1.init != 0
+	) %>%
+	group_by(gamma) %>%
+	summarise(
+		prob.mean = mean(prob),
+		prob.sd = sd(prob)
+	)
+
 data.big <- data.table::fread("data/6eq_ssa_prob_extinction_fucking_big.csv") %>%
 	rename(gamma = V1, R1.init = V2, R2.init = V3, prob = V4) %>%
 	filter(
@@ -27,7 +39,8 @@ data.trans <- data.table::fread("data/6eq_ssa_prob_extinction_fucking_big.csv") 
 		prob.sd = sd(prob)
 	)
 
-gg <- ggplot(data.trans, aes(y = prob.mean, x = gamma)) +
+plot_prob_exit_mean <- function(df) {
+gg <- ggplot(df, aes(y = prob.mean, x = gamma)) +
 	geom_errorbar(aes(ymin = prob.mean - prob.sd, ymax = prob.mean + prob.sd, color = "sd")) +
 	geom_line(aes(color = "line"), linetype = "longdash", size = 0.5) +
 	geom_point(aes(color = "mean")) +
@@ -48,5 +61,10 @@ gg <- ggplot(data.trans, aes(y = prob.mean, x = gamma)) +
 																									linetype = c("blank", "solid")))) +
 	theme_bw()
 
-gg + theme_bw(base_family = "LM Roman 10") + alfR::ggexport("gg_6eq_plot_errorbars_trans.pdf",  font = "lmodern")
+return(gg)
+}
+
+plot_prob_exit_mean(data.small) + theme_bw(base_family = "LM Roman 10") + alfR::ggexport(size = c(6, 2.5), "gg_6eq_plot_errorbars_small.pdf",  font = "lmodern")
+plot_prob_exit_mean(data.trans) + theme_bw(base_family = "LM Roman 10") + alfR::ggexport(size = c(6, 2.5), "gg_6eq_plot_errorbars_trans.pdf",  font = "lmodern")
+plot_prob_exit_mean(data.big) + theme_bw(base_family = "LM Roman 10") + alfR::ggexport(size = c(6, 2.5), "gg_6eq_plot_errorbars_big.pdf",  font = "lmodern")
 
