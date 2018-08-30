@@ -20,11 +20,11 @@ omega <- 1
 sigma1 <- 0.1
 sigma2 <- 0.1
 
-epsilon1 <- 0.1
-epsilon2 <- 0.1
+epsilon1 <- 0
+epsilon2 <- 0
 
-delta1 <- 0.1
-delta2 <- 0.1
+delta1 <- 0
+delta2 <- 0
 
 # Number of interations
 n.iter <- 10000
@@ -128,25 +128,25 @@ ggp <- ggplot(ss.from.fp2) +
 	geom_line(aes(x = gamma1, y = p.num, colour = "p.num", group = (p.num == 0)), linetype="dotdash", size=1) +
 	labs(x = "Gamma", y = "Fixed Point", color = "Variable") +
 	# Lower arrows
-	geom_segment(aes(x = 0.7, y = 0.18, xend = 0.7, yend = 0.02), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
-	geom_segment(aes(x = 0.85, y = 0.18, xend = 0.85, yend = 0.02), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
-	geom_segment(aes(x = 1, y = 0.18, xend = 1, yend = 0.02), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
-	geom_segment(aes(x = 0.55, y = 0.18, xend = 0.55, yend = 0.02), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
-	geom_segment(aes(x = 0.4, y = 0.18, xend = 0.4, yend = 0.02), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
-	geom_segment(aes(x = 0.25, y = 0.18, xend = 0.25, yend = 0.02), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
-	geom_segment(aes(x = 0.5, y = 0.55, xend = 0.5, yend = 0.44), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
-	geom_segment(aes(x = 0.375, y = 0.37, xend = 0.375, yend = 0.26), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
+	# geom_segment(aes(x = 0.7, y = 0.18, xend = 0.7, yend = 0.02), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
+	# geom_segment(aes(x = 0.85, y = 0.18, xend = 0.85, yend = 0.02), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
+	# geom_segment(aes(x = 1, y = 0.18, xend = 1, yend = 0.02), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
+	# geom_segment(aes(x = 0.55, y = 0.18, xend = 0.55, yend = 0.02), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
+	# geom_segment(aes(x = 0.4, y = 0.18, xend = 0.4, yend = 0.02), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
+	# geom_segment(aes(x = 0.25, y = 0.18, xend = 0.25, yend = 0.02), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
+	# geom_segment(aes(x = 0.5, y = 0.55, xend = 0.5, yend = 0.44), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
+	# geom_segment(aes(x = 0.375, y = 0.37, xend = 0.375, yend = 0.26), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
 	# Upper arrows
-	geom_segment(aes(x = 0.2, y = 1, xend = 0.2, yend = 0.91), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
-	geom_segment(aes(x = 0.35, y = 0.96, xend = 0.35, yend = 0.87), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
-	geom_segment(aes(x = 0.5, y = 0.91, xend = 0.5, yend = 0.8), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
+	# geom_segment(aes(x = 0.2, y = 1, xend = 0.2, yend = 0.91), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
+	# geom_segment(aes(x = 0.35, y = 0.96, xend = 0.35, yend = 0.87), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
+	# geom_segment(aes(x = 0.5, y = 0.91, xend = 0.5, yend = 0.8), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
 	# Inner arrows up
-	geom_segment(aes(x = 0.05, y = 0.72, xend = 0.05, yend = 0.88), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
-	geom_segment(aes(x = 0.25, y = 0.69, xend = 0.25, yend = 0.85), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
-	geom_segment(aes(x = 0.45, y = 0.62, xend = 0.45, yend = 0.78), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
+	# geom_segment(aes(x = 0.05, y = 0.72, xend = 0.05, yend = 0.88), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
+	# geom_segment(aes(x = 0.25, y = 0.69, xend = 0.25, yend = 0.85), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
+	# geom_segment(aes(x = 0.45, y = 0.62, xend = 0.45, yend = 0.78), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
 	# Inner arrows down
-	geom_segment(aes(x = 0.05, y = 0.12, xend = 0.05, yend = 0.28), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
-	geom_segment(aes(x = 0.25, y = 0.32, xend = 0.25, yend = 0.48), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
+	# geom_segment(aes(x = 0.05, y = 0.12, xend = 0.05, yend = 0.28), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
+	# geom_segment(aes(x = 0.25, y = 0.32, xend = 0.25, yend = 0.48), size = 0.4, arrow = arrow(length = unit(0.2, "cm"))) +
 		scale_color_manual(breaks = c("p.plus", "p.minus","p.num"),
 											 values = c("p.plus" = "red3",
 																	"p.minus" = "royalblue",

@@ -39,9 +39,9 @@ plot_traj_6eq <- function(data.sto, data.det, extra.data = NULL){
 # Example of usage
 
 # For R1=100, R2=104
-# data.6eq.ssa.100.104 <- readRDS("objects/data.6eq.ssa.100.104.rds")
-# data.6eq.det.01.0104 <- readRDS("objects/data.det.6eq.01.0104.rds")
-# plot_traj_6eq(data.6eq.ssa.500.200, data.6eq.det.05.02)
+data.6eq.ssa.100.104 <- readRDS("objects/data.6eq.ssa.100.104.rds")
+data.6eq.det.01.0104 <- readRDS("objects/data.det.6eq.01.0104.rds")
+plot_traj_6eq(data.6eq.ssa.500.200, data.6eq.det.05.02)
 # plot_traj_6eq(data.6eq.ssa.100.200, data.6eq.det.01.02)
 # plot_traj_6eq(
 # 	data.6eq.ssa.100.104, data.6eq.det.01.0104,

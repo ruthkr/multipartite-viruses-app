@@ -39,6 +39,21 @@ data.trans <- data.table::fread("data/6eq_ssa_prob_extinction_fucking_big.csv") 
 		prob.sd = sd(prob)
 	)
 
+data.2eq <- data.table::fread("data/2eq_ssa_prob_extinction.csv") %>%
+	# rename(gamma = V1, R1.init = V2, R2.init = V3, prob = V4) %>%
+	# filter(
+	# 	R2.init != 0,
+	# 	R1.init != 0,
+	# 	R2.init >= 30,
+	# 	R2.init <= 90
+	# ) %>%
+	group_by(gamma) %>%
+	summarise(
+		prob.mean = mean(prob),
+		prob.sd = sd(prob)
+	)
+
+
 plot_prob_exit_mean <- function(df) {
 gg <- ggplot(df, aes(y = prob.mean, x = gamma)) +
 	geom_errorbar(aes(ymin = prob.mean - prob.sd, ymax = prob.mean + prob.sd, color = "sd")) +
@@ -68,3 +83,4 @@ plot_prob_exit_mean(data.small) + theme_bw(base_family = "LM Roman 10") + alfR::
 plot_prob_exit_mean(data.trans) + theme_bw(base_family = "LM Roman 10") + alfR::ggexport(size = c(6, 2.5), "gg_6eq_plot_errorbars_trans.pdf",  font = "lmodern")
 plot_prob_exit_mean(data.big) + theme_bw(base_family = "LM Roman 10") + alfR::ggexport(size = c(6, 2.5), "gg_6eq_plot_errorbars_big.pdf",  font = "lmodern")
 
+plot_prob_exit_mean(data.2eq)
