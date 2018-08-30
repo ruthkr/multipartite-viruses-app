@@ -9,3 +9,6 @@
 /images
 4eq_rk4_bipartite_josep2.c
 *.sublime*
+6eq_ssa_debug.c
+*.png
+*.pdf
