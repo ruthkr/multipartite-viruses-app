@@ -21,16 +21,16 @@ model <- function(t, state, parms) {
 }
 
 p <- c(kappa1 = 1, kappa2 = 1, kappa3 = 1, kappa4 = 0.5,
-			 alpha = 1, omega = 1, mu = 1, beta = 0.6,
+			 alpha = 1, omega = 1, mu = 1, beta = 1,
 			 gamma1 = 0.1, gamma2 = 0.1, gamma3 = 0.1, gamma4 = 0.1,
 			 sigma1 = 0.05, sigma2 = 0.05, sigma3 = 0.05,
-			 epsilon1 = 0.1, epsilon2 = 0.1, epsilon3 = 0.1,
+			 epsilon1 = 0.5, epsilon2 = 0.5, epsilon3 = 0.5,
 			 delta1 = 0.05, delta2 = 0.05, delta3 = 0.05) # p is a named vector of parameters
 
 
 s <- c(RNA1 = 1,
-			 RNA2 = 0.1,
-			 RNA3 = 0.1,
+			 RNA2 = 0.5,
+			 RNA3 = 1,
 			 RNA4 = 0,
 			 replicase = 0,
 			 coat = 0,
