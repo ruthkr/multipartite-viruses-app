@@ -1,4 +1,4 @@
-# 3D phase plane analysis by the cube.R extension for grind.R 
+# 3D phase plane analysis by the cube.R extension for grind.R
 # This script defines cube() and run3d() and uses the plot3D library.
 # The default projection of this library is to have the origin in
 # the front-left corner, and to have y pointing backwards.
@@ -8,7 +8,7 @@
 # plotdev() "refreshes" the picture (e.g., to make a pdf)
 #
 # The default projection of the old GRIND was to have the origin in
-# the left hand back corner, with x pointing rightwards, y upwards, 
+# the left hand back corner, with x pointing rightwards, y upwards,
 # and z forwards. If you like that call cube() and run3d() with
 # (x=3, y=1, z=2, theta=130, ...).
 # One can set par(mar=c(0,0,0,0)) to reduce the margins.
@@ -50,7 +50,7 @@ cube <- function(x=1, y=2, z=3, xmin=0, xmax=1, ymin=0, ymax=1, zmin=0, zmax=1, 
     vstate[[x]] <- xc; vstate[[y]] <- yc; vstate[[z]] <- zc
     odes(time,vstate,parms)[[1]][seq((i-1)*npixels2+1,i*npixels2)]
   }
-  
+
   add <- FALSE
   for (i in ishows) {
     fc <- rep(yc[1],npixels2)
@@ -58,12 +58,12 @@ cube <- function(x=1, y=2, z=3, xmin=0, xmax=1, ymin=0, ymax=1, zmin=0, zmax=1, 
     add <- TRUE
     fc <- rep(yc[npixels],npixels2)
     try(contour3D(x=xc,y=fc[1],z=zc,colvar=outer(xc,zc,FUN,fc,x,z,y,i),levels=0,col=colors[i],add=TRUE,lwd=lwd,...),silent=TRUE)
-    
+
     fc <- rep(zc[1],npixels2)
     try(contour3D(x=xc,y=yc,z=fc[1],colvar=outer(xc,yc,FUN,fc,x,y,z,i),levels=0,col=colors[i],add=TRUE,lwd=lwd,...),silent=TRUE)
     fc <- rep(zc[npixels],npixels2)
     try(contour3D(x=xc,y=yc,z=fc[1],colvar=outer(xc,yc,FUN,fc,x,y,z,i),levels=0,col=colors[i],add=TRUE,lwd=lwd,...),silent=TRUE)
-    
+
     fc <- rep(xc[1],npixels2)
     try(contour3D(x=fc[1],y=yc,z=zc,colvar=outer(yc,zc,FUN,fc,y,z,x,i),levels=0,col=colors[i],add=TRUE,lwd=lwd,...),silent=TRUE)
     fc <- rep(xc[npixels],npixels2)
@@ -85,4 +85,4 @@ run3d <- function(x=1, y=2, z=3, xmin=0, xmax=1, ymin=0, ymax=1, zmin=0, zmax=1,
   else do.call('lines3D',c(list(x=data[,1+x],y=data[,1+y],z=data[,1+z],col=col,add=TRUE),dots_l3d))
 }
 
-cat("cube.R was sourced\n")
+# cat("cube.R was sourced\n")

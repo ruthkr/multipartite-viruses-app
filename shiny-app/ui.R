@@ -5,7 +5,8 @@ library(shinydashboard)
 library(dygraphs)
 library(shinyjs)
 
-# UI -------------------------------------------------------
+
+# Header ---------------------------------------------------
 
 header <- dashboardHeader(
 	title = span(tagList(icon("flask"), "Multipartite Viruses"))
@@ -15,86 +16,102 @@ plot.checkbox <- checkboxGroupInput(
 	"plots_checkbox", "Plots",
 	choices = c(
 		"Time Series" = "time_series",
-		"Phase Portrait" = "phase_port",
-		"Bifurcation Diagram" = "bifur_diagram",
-		"Variation of Gamma" = "gamma_var"
+		"Phase Portrait" = "phase_port"
+		# "3D Trajectory" = "3d_traj"
 	)
 )
 
-plot.inputs <- box(width = 12,
-	sliderInput("slider_r1", label = "R1", min = 0, max = 1, step = 0.1, value = 0.1)
+# Replication model ####
+plot.inputs.rep <- box(
+	width = 12,
+	sliderInput("slider_r1", label = "R1", min = 0, max = 1, step = 0.1, value = 1)
 )
 
-plot.params <- box(width = 12,
+plot.params.rep1 <- box(
+	width = 12,
 	sliderInput("slider_kappa",  label = "Kappa", min = 0, max = 1, step = 0.1, value = 1),
-	sliderInput("slider_gamma1", label = "Gamma", min = 0, max = 1, step = 0.1, value = 1),
-	sliderInput("slider_alpha",  label = "Omega (ω)", min = 0, max = 1, step = 0.1, value = 0.1),
+	sliderInput("slider_gamma", label = "Gamma", min = 0, max = 1, step = 0.1, value = 1)
+)
+
+plot.params.rep2 <- box(
+	width = 12,
+	sliderInput("slider_alpha",  label = "Omega", min = 0, max = 1, step = 0.1, value = 0.1),
 	sliderInput("slider_sigma",  label = "Sigma", min = 0, max = 1, step = 0.1, value = 0.1)
 )
 
-plot.inputs.bi <- box(width = 12,
-									 sliderInput("slider_r1", label = "R1", min = 0, max = 1, step = 0.1, value = 0.1)
+# Bipartite model ####
+plot.inputs.bip <- box(
+	width = 12,
+	sliderInput("slider_r1_bi", label = "R1", min = 0, max = 1, step = 0.1, value = 1),
+	sliderInput("slider_r2_bi", label = "R2", min = 0, max = 1, step = 0.1, value = 0.5)
 )
 
-plot.params.bi <- box(width = 12,
-									 sliderInput("slider_kappa",  label = "Kappa", min = 0, max = 1, step = 0.1, value = 1),
-									 sliderInput("slider_gamma1", label = "Gamma", min = 0, max = 1, step = 0.1, value = 1),
-									 sliderInput("slider_alpha",  label = "Omega (ω)", min = 0, max = 1, step = 0.1, value = 0.1),
-									 sliderInput("slider_sigma",  label = "Sigma", min = 0, max = 1, step = 0.1, value = 0.1)
+plot.params.bip1 <- box(
+	width = 12,
+	sliderInput("slider_kappa_bi",   label = "Kappa",   min = 0, max = 1, step = 0.1, value = 1),
+	sliderInput("slider_alpha_bi",   label = "Alpha",   min = 0, max = 1, step = 0.1, value = 1)
 )
 
+plot.params.bip2 <- box(
+	width = 12,
+	sliderInput("slider_gamma_bi",   label = "Gamma",   min = 0, max = 1, step = 0.05, value = 0.1),
+	sliderInput("slider_sigma_bi",   label = "Sigma",   min = 0, max = 1, step = 0.1, value = 0.1)
+)
+
+plot.params.bip3 <- box(
+	width = 12,
+	sliderInput("slider_epsilon_bi", label = "Epsilon", min = 0, max = 1, step = 0.1, value = 0.1),
+	sliderInput("slider_delta_bi",   label = "Delta",   min = 0, max = 1, step = 0.1, value = 0.1)
+)
+
+# Tripartite model ####
+plot.inputs.tri <- box(
+	width = 12,
+	sliderInput("slider_r1_tri", label = "R1", min = 0, max = 1, step = 0.1, value = 1),
+	sliderInput("slider_r2_tri", label = "R2", min = 0, max = 1, step = 0.1, value = 0.5),
+	sliderInput("slider_r3_tri", label = "R3", min = 0, max = 1, step = 0.1, value = 0.5)
+)
+
+plot.params.tri1 <- box(
+	width = 12,
+	sliderInput("slider_kappa_tri",   label = "Kappa",   min = 0, max = 1, step = 0.1, value = 1),
+	sliderInput("slider_alpha_tri",   label = "Alpha",   min = 0, max = 1, step = 0.1, value = 1),
+	sliderInput("slider_omega_tri",   label = "Omega",   min = 0, max = 1, step = 0.1, value = 1)
+)
+
+plot.params.tri2 <- box(
+	width = 12,
+	sliderInput("slider_mu_tri",   label = "Mu",   min = 0, max = 1, step = 0.1, value = 1),
+	sliderInput("slider_beta_tri",   label = "Beta",   min = 0, max = 1, step = 0.1, value = 0.6),
+	sliderInput("slider_gamma_tri",   label = "Gamma",   min = 0, max = 1, step = 0.05, value = 0.1)
+)
+
+plot.params.tri3 <- box(
+	width = 12,
+	sliderInput("slider_sigma_tri",   label = "Sigma",   min = 0, max = 1, step = 0.1, value = 0.1),
+	sliderInput("slider_epsilon_tri", label = "Epsilon", min = 0, max = 1, step = 0.1, value = 0.1),
+	sliderInput("slider_delta_tri",   label = "Delta",   min = 0, max = 1, step = 0.1, value = 0.1)
+)
+
+# Sidebar --------------------------------------------------
 
 sidebar <- dashboardSidebar(
 	sidebarMenu(
 		id = "sidebarmenu",
-		menuItem("About this App", tabName = "home",  icon = icon("home")),
-		menuItem("Replication Model", tabName = "replication",  icon = icon("clone"), selected = T),
+		menuItem("About this App", tabName = "home",  icon = icon("home"), selected = T),
+		menuItem("Replication Model", tabName = "replication",  icon = icon("clone")),
 		menuItem("Bipartite Model", tabName = "bipartite", icon = icon("retweet")),
 		menuItem("Tripartite Model", tabName = "tripartite", icon = icon("spinner")),
 
-		# Replication Model
-		conditionalPanel(
-			condition = "input.sidebarmenu == 'replication'",
-			plot.checkbox,
-			actionButton("run_sims", label = "Run Simulations")
-		),
-
-		# Bipartite Model
-		conditionalPanel(
-			condition = "input.sidebarmenu == 'bipartite'",
-			plot.checkbox,
-			actionButton("run_sims2", label = "Run Simulations")
-		),
-
-		# Tripartite Model
-		conditionalPanel(
-			condition = "input.sidebarmenu == 'tripartite'",
-			plot.checkbox
-		)
-
+		plot.checkbox
 	)
 )
 
+
+# Body -----------------------------------------------------
+
 body <- dashboardBody(
 	useShinyjs(),
-
-# 	tags$head(
-# 		tags$style(type="text/css",
-# 							 "label.control-label, .selectize-control.single {
-# 							 display: table-cell;
-# 							 text-align: center;
-# 							 vertical-align: middle;
-# 							 }
-# 							 label.control-label {
-# 							 padding-right: 10px;
-# 							 }
-# 							 .form-group {
-# 							 display: table-row;
-# 							 }
-# 							 .selectize-control.single div.item {
-# 							 padding-right: 15px;
-# 							 }")
-#   ),
 
 	tags$head(tags$style(
 		HTML('
@@ -107,53 +124,98 @@ body <- dashboardBody(
 	tabItems(
 		tabItem(tabName = "home",
 						h2("About this project"),
-						# includeMarkdown("body.md"),
+						includeMarkdown("body.md"),
 						actionButton(
 							inputId='ab1', label="Fork this project",
 							icon = icon("github"),
 							onclick ="window.open(
-							'https://github.com/aldomann/open-data-project', '_blank')"
+							'https://github.com/ruthkr/multipartite-viruses-app', '_blank')"
 							)
 		),
 
-		# Replication Model
+		# Replication Model ####
 		tabItem(tabName = "replication",
 						h2("Replication Model"),
-						verbatimTextOutput("debugger"),
 						fluidRow(
 							column(width = 4,
-								plot.inputs,
-								plot.params
+										 h4("Input"),
+										 plot.inputs.rep
 							),
 							column(width = 8,
-										 uiOutput('ui_plots')
+										 h4("Parameters"),
+										 fluidRow(
+										 	column(width = 6,
+										 				 plot.params.rep1
+										 	),
+										 	column(width = 6,
+										 				 plot.params.rep2
+										 	)
+										 )
 							)
 						)
 		),
 
-		# Bipartite Model
+		# Bipartite Model ####
 		tabItem(tabName = "bipartite",
-						h2("Bipartite Model")
-						# verbatimTextOutput("debugger"),
-						# fluidRow(
-						# 	column(width = 4,
-						# 				 plot.inputs.bi,
-						# 				 plot.params.bi
-						# 	),
-						# 	column(width = 8,
-						# 				 uiOutput('ui_plots')
-						# 	)
-						# )
-
+						h2("Bipartite Model"),
+						fluidRow(
+							column(width = 3,
+										 h4("Input"),
+										 plot.inputs.bip
+							),
+							column(width = 9,
+										 h4("Parameters"),
+										 fluidRow(
+										 	column(width = 4,
+										 				 plot.params.bip1
+										 	),
+										 	column(width = 4,
+										 				 plot.params.bip2
+										 	),
+										 	column(width = 4,
+										 				 plot.params.bip3
+										 	)
+										 )
+							)
+						)
 		),
 
-		# Tripartite Model
+		# Tripartite Model ###
 		tabItem(tabName = "tripartite",
-						h2("Tripartite Model")
-						# dygraphOutput("compare.plot")
+						h2("Tripartite Model"),
+						fluidRow(
+							column(width = 3,
+										 h4("Input"),
+										 plot.inputs.tri
+							),
+							column(width = 9,
+										 h4("Parameters"),
+										 fluidRow(
+										 	column(width = 4,
+										 				 plot.params.tri1
+										 	),
+										 	column(width = 4,
+										 				 plot.params.tri2
+										 	),
+										 	column(width = 4,
+										 				 plot.params.tri3
+										 	)
+										 )
+							)
+						)
 		)
+
+	),
+
+	fluidRow(
+		column(width = 12,
+					 uiOutput('ui_plots')
+					 )
 	)
 )
+
+
+# Build UI -------------------------------------------------
 
 ui <- dashboardPage(
 	skin = "green",
